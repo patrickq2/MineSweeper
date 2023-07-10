@@ -120,25 +120,27 @@ void Board::setBombs() {
     vector<int> mineLoc;
     bool duplicate;
     for (int i = 0; i < mines; i++) {
+        duplicate = true;
         while(duplicate) {
-            duplicate = true;
             int location = Random::Number(0,(rows * columns) - 1);
             if(find(mineLoc.begin(), mineLoc.end(), location) == mineLoc.end()){
                 mineLoc.push_back(location);
                 int tileCounter = 0;
-                for( int i = 0; i < tiles.size()-1; i++) {
+                for(int i = 0; i < tiles.size(); i++) {
                     for (int j = 0; j < tiles.at(i).size(); j++) {
                         if(tileCounter == location){
                             tiles[i][j].hasMine = true;
-                            i = tiles.size();
-                            j = tiles[i].size();
+                            duplicate = false;
+                            break;
                         }
                         else {
                             tileCounter++;
                         }
                     }
+                    if(!duplicate) {
+                        break;
+                    }
                 }
-                duplicate = false;
             }
 
         }
